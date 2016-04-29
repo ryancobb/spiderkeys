@@ -47,3 +47,14 @@ $j(document).keydown(function(e) {
 function nextstep () {
   $j(".tarantula-btn-next")[1].click();
 };
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.message === "enable") {
+      enabled = 1;
+    }
+    else if (request.message === "disable") {
+      enabled = 0;
+    }
+  }
+);
