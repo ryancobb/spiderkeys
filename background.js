@@ -10,17 +10,26 @@ function updateIcon(toggle) {
 }
 
 chrome.browserAction.onClicked.addListener(function(tab) {
-  // Send a message to the active tab
+  if (enabled == 1) {
+    updateIcon("off");
+    enabled = 0;
+  }
+  else if (enabled == 0) {
+    updateIcon("on");
+    enabled = 1;
+  }
+  //Send button state to any Testia Tarantula tab
   chrome.tabs.query({title: "Testia Tarantula"}, function(tabs) {
-    if (enabled == 1) {
-      chrome.tabs.sendMessage(tabs[0].id, {message: "disable"});
-      updateIcon("off");
-      enabled = 0;
-    }
-    else if (enabled == 0) {
-      chrome.tabs.sendMessage(tabs[0].id, {message: "enable"});
-      updateIcon("on");
-      enabled = 1;
+    for (var i=0; i<tabs.length; ++i) {
+      chrome.tabs.sendMessage(tabs[i].id, {msg: enabled});
     }
   });
 });
+
+//Sends button state when requested from content script
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.msg == "btn_state") {
+      sendResponse({msg: enabled});
+    }
+  });

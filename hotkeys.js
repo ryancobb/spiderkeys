@@ -1,6 +1,8 @@
 var $j = jQuery.noConflict();
 var enabled = 1;
 
+get_button_state(); //get the button state on intial load
+
 $j(document).keydown(function(e) {
   if (enabled == 1) {
     switch (e.which) {
@@ -25,12 +27,10 @@ $j(document).keydown(function(e) {
 
       case 40: //down arrow
         nextstep();
-        console.log('down');
         break;
 
       case 38: //up arrow
         $j(".tarantula-btn-prev")[1].click();
-        console.log('up');
         break;
 
       case 109: //-
@@ -48,13 +48,15 @@ function nextstep () {
   $j(".tarantula-btn-next")[1].click();
 };
 
+//Get button state
+function get_button_state () {
+  chrome.runtime.sendMessage({msg: "btn_state"}, function(response){
+     enabled = response.msg * 1;
+  });
+}
+
+//Listen for button updates
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    if (request.message === "enable") {
-      enabled = 1;
-    }
-    else if (request.message === "disable") {
-      enabled = 0;
-    }
-  }
-);
+      enabled = request.msg * 1;
+  });
