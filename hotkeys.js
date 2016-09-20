@@ -4,29 +4,39 @@ var enabled = 1;
 get_button_state(); //get the button state on intial load
 
 $j(document).keydown(function(e) {
+  var lastStep = false;
+
   if (enabled == 1) {
     switch (e.which) {
       case 80: //p
+
+        if ( lastTestStep() ) {
+          lastStep = true;
+        }
+
         $j(".tarantula-btn-pass").click();
+        if ( lastStep ) {
+          nextCase();
+        }
         break;
 
       case 70: //f
         $j(".tarantula-btn-fail").click();
-        nextstep();
+        next();
         break;
 
       case 83: //s
         $j(".tarantula-btn-skip").click();
-        nextstep();
+        next();
         break;
 
       case 78: //n
         $j(".tarantula-btn-notimplemented").click();
-        nextstep();
+        next();
         break;
 
       case 40: //down arrow
-        nextstep();
+        next();
         break;
 
       case 38: //up arrow
@@ -38,15 +48,32 @@ $j(document).keydown(function(e) {
         break;
 
       case 107: //+
-        $j(".tarantula-btn-next")[0].click();
+        nextCase();
         break;
     }
   }
 });
 
+function next() {
+  if ( lastTestStep() ) {
+    nextCase();
+  }
+  else {
+    nextstep();
+  }
+}
+
+function lastTestStep() {
+  return $j(".tarantula-execution-step-current").next("tr").text() === "End of Case"
+}
+
 function nextstep () {
   $j(".tarantula-btn-next")[1].click();
 };
+
+function nextCase() {
+  $j(".tarantula-btn-next")[0].click();
+}
 
 //Get button state
 function get_button_state () {
