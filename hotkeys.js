@@ -7,49 +7,53 @@ $j(document).keydown(function(e) {
   var lastStep = false;
 
   if (enabled == 1) {
-    switch (e.which) {
-      case 80: //p
+    if ( inTest() ) {
+      if ( notTextBox() ) {
+        switch (e.which) {
+          case 80: //p
 
-        if ( lastTestStep() ) {
-          lastStep = true;
+            if ( lastTestStep() ) {
+              lastStep = true;
+            }
+
+            $j(".tarantula-btn-pass").click();
+            if ( lastStep ) {
+              nextCase();
+            }
+            break;
+
+          case 70: //f
+            $j(".tarantula-btn-fail").click();
+            next();
+            break;
+
+          case 83: //s
+            $j(".tarantula-btn-skip").click();
+            next();
+            break;
+
+          case 78: //n
+            $j(".tarantula-btn-notimplemented").click();
+            next();
+            break;
+
+          case 40: //down arrow
+            next();
+            break;
+
+          case 38: //up arrow
+            $j(".tarantula-btn-prev")[1].click();
+            break;
+
+          case 109: //-
+            $j(".tarantula-btn-prev")[0].click();
+            break;
+
+          case 107: //+
+            nextCase();
+            break;
         }
-
-        $j(".tarantula-btn-pass").click();
-        if ( lastStep ) {
-          nextCase();
-        }
-        break;
-
-      case 70: //f
-        $j(".tarantula-btn-fail").click();
-        next();
-        break;
-
-      case 83: //s
-        $j(".tarantula-btn-skip").click();
-        next();
-        break;
-
-      case 78: //n
-        $j(".tarantula-btn-notimplemented").click();
-        next();
-        break;
-
-      case 40: //down arrow
-        next();
-        break;
-
-      case 38: //up arrow
-        $j(".tarantula-btn-prev")[1].click();
-        break;
-
-      case 109: //-
-        $j(".tarantula-btn-prev")[0].click();
-        break;
-
-      case 107: //+
-        nextCase();
-        break;
+      }
     }
   }
 });
@@ -73,6 +77,14 @@ function nextstep () {
 
 function nextCase() {
   $j(".tarantula-btn-next")[0].click();
+}
+
+function notTextBox() {
+  return $j(".x-form-focus").length === 0;
+}
+
+function inTest() {
+  return $j('#menuitem_test').css("background").search("menuitem_selected") > 0
 }
 
 //Get button state
