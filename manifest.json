@@ -3,7 +3,7 @@
 
   "name": "Tarantula Hotkeys",
   "description": "This extension enables hotkeys for tarantula",
-  "version": "0.3",
+  "version": "0.32",
 
   "permissions": [
     "tabs"
@@ -24,7 +24,7 @@
   "content_scripts": [
     {
     "js": ["jquery-1.12.3.min.js", "hotkeys.js"],
-    "matches": [ "http://10.17.30.14/*"]
+    "matches": [ "http://10.17.22.220/*"]
     }
   ]
 }

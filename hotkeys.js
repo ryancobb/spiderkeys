@@ -84,7 +84,7 @@ function notTextBox() {
 }
 
 function inTest() {
-  return $j('#menuitem_test').css("background").search("menuitem_selected") > 0
+  return $j("#toolbar tr td:first").text() == "Case Execution";
 }
 
 //Get button state
